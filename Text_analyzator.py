@@ -66,48 +66,46 @@ def prihlaseni():
             # Zvolený text z listu = selected_text
             selected_text = TEXTS[selected_text_index]
 
-            # COUNT CASE (poč. slov) - rozdělení textu na slova
-            words_count = selected_text.split()
-            count_case = len(words_count)
-            print(f"There are {count_case} words in the selected text.")
-
-            # CAPITAL CASE (počet slov začínajících velkým písmenem)
+            # Inicializace počítadel
+            word_count = 0
             capital_case = 0
-            for char in selected_text:
-                if char[0].isupper():
-                    capital_case += 1
-            print(f"There are {capital_case} titlecase words.")
-
-            # UPPER CASE (počet slov psaných velkými písmeny)
             upper_case = 0
-            for char in selected_text:
-                if char.isupper():
-                    upper_case += 1
-            print(f"There are {upper_case} uppercase words.")
-
-            # LOWER CASE (počet slov psaných malými písmeny)
             lower_case = 0
-            for char in selected_text:
-                if char.islower():
+            numbers_count = 0
+            numbers_sum = 0
+
+            # rozdělení textu na slova a zpracování
+            for word in selected_text.split():
+                #odstr.interpunkce
+                clean_word = ''.join(char for char in word if char.isalnum())
+                if not clean_word:
+                    continue
+                word_count += 1
+
+                # CAPITAL CASE (počet slov začínajících velkým písmenem)
+                if clean_word.istitle():
+                    capital_case += 1
+
+                # UPPER CASE (počet slov psaných velkými písmeny)
+                #if clean_word.isupper() and not clean_word.isdigit():
+                if clean_word.isupper() and clean_word.isalpha():
+                    upper_case += 1
+
+                # LOWER CASE (počet slov psaných malými písmeny)
+                if clean_word.islower():
                     lower_case += 1
+
+                # NUMBERS COUNT CASE (počet čísel (ne cifer))
+                if clean_word.isdigit():
+                    numbers_count += 1
+                    numbers_sum += int(clean_word)
+
+            print(f"There are {word_count} words in the selected text.")
+            print(f"There are {capital_case} words starting with a capital letter.")
+            print(f"There are {upper_case} uppercase words.")
             print(f"There are {lower_case} lowercase words.")
-
-            # NUMBERS COUNT CASE (počet čísel (ne cifer))
-            numbers_count_case = 0
-            for char in selected_text:
-                if char.isdigit():
-                    numbers_count_case += 1
-            print(f"There are {numbers_count_case} numeric strings.")
-
-            # NUMBERS SUM CASE (sumu všech čísel (ne cifer))
-            numbers_sum_case = 0
-
-            for word in words_count:
-                digits_in_word = ''.join(char for char in word if char.isdigit())
-                if digits_in_word:
-                    numbers_sum_case += int(digits_in_word)
-
-            print(f"The sum of all numbers {numbers_sum_case}.")
+            print(f"There are {numbers_count} numeric strings.")
+            print(f"The sum of all numbers {numbers_sum}.")
 
             # GRAF
             chart_word_input = selected_text.split()
@@ -132,8 +130,6 @@ def prihlaseni():
                 print(f"{length:<5}|{bar:^20}|{freq:>5}")
 
             print(rozdelovac)
-
-
         # Neplatný vstup
         else:
             print("The number is out of the allowed range (1-3).")
@@ -141,7 +137,6 @@ def prihlaseni():
         # Neplatný login
         print("username:", jmeno, "\npassword:", heslo, "\nunregistered user, terminating the program..")
         exit()  # Ukončení programu
-
 
 # Funkce pro přihlášení
 prihlaseni()
