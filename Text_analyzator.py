@@ -33,7 +33,7 @@ in modern oceans. Other fish such as paddlefish,
 garpike and stingray are also present.'''
          ]
 
-rozdelovac = "-" * 40
+spliter = "-" * 40
 
 users_and_pwd = {
     'bob': '123',
@@ -42,31 +42,29 @@ users_and_pwd = {
     'liz': 'pass123'
 }
 
+# user login
+def login():
+    name = input("user: ")
+    pwd = input("password: ")
 
-# Přihlášení uživatele
-def prihlaseni():
-    jmeno = input("user: ")
-    heslo = input("password: ")
-
-    # Ověření uživatele a hesla
-    if jmeno in users_and_pwd and users_and_pwd[jmeno] == heslo:
-        print(rozdelovac)
+    # user and pwd verification
+    if name in users_and_pwd and users_and_pwd[name] == pwd:
+        print(spliter)
         print("Welcome to the app, " +
-              jmeno +
+              name +
               "\nWe have 3 texts to be analyzed.")
-        print(rozdelovac)
+        print(spliter)
 
-        # Zadání čísla uživatelem
+        # user number input
         volba = input("Enter a number btw. 1 and 3 to select: ")
 
-        # Kontrola vstupu
+        # input check
         if volba.isdigit() and 1 <= int(volba) <= 3:
             # Převod zvoleného čísla na výběrový index
             selected_text_index = int(volba) - 1
             # Zvolený text z listu = selected_text
             selected_text = TEXTS[selected_text_index]
 
-            # Inicializace počítadel
             word_count = 0
             capital_case = 0
             upper_case = 0
@@ -74,9 +72,9 @@ def prihlaseni():
             numbers_count = 0
             numbers_sum = 0
 
-            # rozdělení textu na slova a zpracování
+            # text split&processing (rozdělení textu na slova a zpracování)
             for word in selected_text.split():
-                #odstr.interpunkce
+                #cleaning of the text (interpunction)
                 clean_word = ''.join(char for char in word if char.isalnum())
                 if not clean_word:
                     continue
@@ -107,36 +105,36 @@ def prihlaseni():
             print(f"There are {numbers_count} numeric strings.")
             print(f"The sum of all numbers {numbers_sum}.")
 
-            # GRAF
+            # CHART (četnost různých délek slov v textu)
             chart_word_input = selected_text.split()
             chart_word_length = {}
 
-            for word in chart_word_input:  # Pocitani delky slov
+            # dict for words length
+            max_length = 0
+            for word in chart_word_input:
                 if word.isalpha():
-                    word_lenght = len(word)
-                    if word_lenght not in chart_word_length:
-                        chart_word_length[word_lenght] = 1
-                    else:
-                        chart_word_length[word_lenght] += 1
-            max_length = max(chart_word_length.keys())
+                    word_length = len(word)
+                    chart_word_length[word_length] = chart_word_length.get(word_length, 0) + 1
+                    max_length = max(max_length, word_length)
 
-            print(rozdelovac)
-            print(f"{'LEN':<5}|{'OCCURRENCES':^20}|{'NR.':>5}")  # Graf-hlavicka
-            print(rozdelovac)
+            print(spliter)
+            print(f"{'LEN':<5}|{'OCCURRENCES':^20}|{'NR.':>5}")  # Chart - header
+            print(spliter)
 
-            for length in range(1, max_length + 1):  # Graf-data
+            # Generating chart (1 - max_length)
+            for length in range(1, max_length + 1):
                 freq = chart_word_length.get(length, 0)
                 bar = '*' * freq
-                print(f"{length:<5}|{bar:^20}|{freq:>5}")
+                print(f"{length:<5}|{bar:<20}|{freq:>5}")
+            print(spliter)
 
-            print(rozdelovac)
-        # Neplatný vstup
+        # invalid output
         else:
             print("The number is out of the allowed range (1-3).")
     else:
-        # Neplatný login
-        print("username:", jmeno, "\npassword:", heslo, "\nunregistered user, terminating the program..")
-        exit()  # Ukončení programu
+        # invalid login
+        print("username:", name, "\npassword:", pwd, "\nunregistered user, terminating the program..")
+        exit()  # program termination
 
-# Funkce pro přihlášení
-prihlaseni()
+# login function
+login()
