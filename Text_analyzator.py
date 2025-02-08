@@ -32,6 +32,7 @@ other freshwater genera and herring similar to those
 in modern oceans. Other fish such as paddlefish,
 garpike and stingray are also present.'''
          ]
+import re
 
 spliter = "-" * 40
 
@@ -75,7 +76,7 @@ def login():
             # text split&processing (rozdělení textu na slova a zpracování)
             for word in selected_text.split():
                 #cleaning of the text (interpunction)
-                clean_word = ''.join(char for char in word if char.isalnum())
+                clean_word = re.sub(r'\W+', '', word)
                 if not clean_word:
                     continue
                 word_count += 1
@@ -106,13 +107,15 @@ def login():
             print(f"The sum of all numbers {numbers_sum}.")
 
             # CHART (četnost různých délek slov v textu)
-            chart_word_input = selected_text.split()
+            chart_word_input = [re.sub(r'\W+', '', word) for word in selected_text.split()] #removing non-alpha char (vše kromě písmen a číslic)
             chart_word_length = {}
+            #print(chart_word_input)
 
             # dict for words length
             max_length = 0
             for word in chart_word_input:
-                if word.isalpha():
+                #if word.isalpha(): #only letters
+                if word.isalnum(): #alphanumeric
                     word_length = len(word)
                     chart_word_length[word_length] = chart_word_length.get(word_length, 0) + 1
                     max_length = max(max_length, word_length)
