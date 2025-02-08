@@ -61,7 +61,7 @@ def login():
 
         # input check
         if volba.isdigit() and 1 <= int(volba) <= 3:
-            # Převod zvoleného čísla na výběrový index
+            # selected number index transfer
             selected_text_index = int(volba) - 1
             # Zvolený text z listu = selected_text
             selected_text = TEXTS[selected_text_index]
@@ -73,7 +73,7 @@ def login():
             numbers_count = 0
             numbers_sum = 0
 
-            # text split&processing (rozdělení textu na slova a zpracování)
+            # text split&processing (rozdelení textu na slova a zpracování)
             for word in selected_text.split():
                 #cleaning of the text (interpunction)
                 clean_word = re.sub(r'\W+', '', word)
@@ -81,20 +81,20 @@ def login():
                     continue
                 word_count += 1
 
-                # CAPITAL CASE (počet slov začínajících velkým písmenem)
+                # CAPITAL CASE (pocet slov zacínajících velkým písmenem)
                 if clean_word.istitle():
                     capital_case += 1
 
-                # UPPER CASE (počet slov psaných velkými písmeny)
+                # UPPER CASE (pocet slov psaných velkými písmeny)
                 #if clean_word.isupper() and not clean_word.isdigit():
                 if clean_word.isupper() and clean_word.isalpha():
                     upper_case += 1
 
-                # LOWER CASE (počet slov psaných malými písmeny)
+                # LOWER CASE (pocet slov psaných malými písmeny)
                 if clean_word.islower():
                     lower_case += 1
 
-                # NUMBERS COUNT CASE (počet čísel (ne cifer))
+                # NUMBERS COUNT CASE (pocet císel (ne cifer))
                 if clean_word.isdigit():
                     numbers_count += 1
                     numbers_sum += int(clean_word)
@@ -106,8 +106,8 @@ def login():
             print(f"There are {numbers_count} numeric strings.")
             print(f"The sum of all numbers {numbers_sum}.")
 
-            # CHART (četnost různých délek slov v textu)
-            chart_word_input = [re.sub(r'\W+', '', word) for word in selected_text.split()] #removing non-alpha char (vše kromě písmen a číslic)
+            # CHART
+            chart_word_input = [re.sub(r'\W+', '', word) for word in selected_text.split()] #removing non-alpha char (vše krome písmen a císlic)
             chart_word_length = {}
             #print(chart_word_input)
 
